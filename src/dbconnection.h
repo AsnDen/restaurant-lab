@@ -12,8 +12,8 @@ class DBConnection
     private:
         pqxx::connection conn;
     public:
-        pqxx::connection makeConnection();
-        void closeConnection( pqxx::connection conn );
+        DBConnection();
+        void closeConnection();
 };
 
 #endif

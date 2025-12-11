@@ -2,27 +2,27 @@
 #include "secrets.h"
 
 #include <pqxx/pqxx>
+#include <plog/Log.h>
 
 #include <string>
 #include <stdexcept>
 
-pqxx::connection DBConnection::makeConnection()
+DBConnection::DBConnection() : conn{"host=localhost port=5432 dbname=postgres "
+                                        "user = postgres password = "
+                                        + loadDBPassword()}
 {
-    std::string conninfo {"host=localhost port=5432 dbname=postgres "
-                          "user = postgres password = "
-                          + loadDBPassword()};
-    pqxx::connection conn{conninfo};
-
     if( !conn.is_open() ) {
+        PLOGF << "Failed to connect to a database";
         throw std::runtime_error( "Error while connection to a database" );
     }
 
-    return conn;
+    PLOGI << "Connected to a database";
 }
 
-void DBConnection::closeConnection( pqxx::connection conn )
+void DBConnection::closeConnection()
 {
     if( conn.is_open() ) {
+        PLOGI << "Closed connection with the database";
         conn.close();
     }
 }

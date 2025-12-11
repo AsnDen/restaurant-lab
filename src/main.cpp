@@ -1,46 +1,57 @@
 #include "menu.h"
 #include "dbconnection.h"
 
+#include "dbconnection.h"
+#include <plog/Log.h>
+#include "plog/Initializers/RollingFileInitializer.h"
+
 #include <iostream>
+#include <string>
 
 int main()
 {
     bool hasStarted {true};
-    connect();
+
+    // Initialize loggers
+    plog::init<0>( plog::debug, "program-log.txt" );
+    plog::init<1>( plog::debug, "log.txt" );
+
     while( hasStarted ) {
         showMainMenu();
         switch( chooseOption() ) {
             case 1:
-                std::cout << "Hey";
+                PLOGI << "Add category is used";
                 break;
             case 2:
-                std::cout << "Day";
+                PLOGI << "Add dish is used";
                 break;
             case 3:
-                std::cout << "Day";
+                PLOGI << "Add order is used";
                 break;
             case 4:
-                std::cout << "Day";
+                PLOGI << "Show dishes is chosen";
                 break;
             case 5:
-                std::cout << "Day";
+                PLOGI << "Show orders is chosen";
                 break;
             case 6:
-                std::cout << "Day";
+                PLOGI << "Show income in category is chosen";
                 break;
             case 7:
-                std::cout << "Day";
+                PLOGI << "Show top-3 most ordered dished is chosen";
                 break;
             case 8:
-                std::cout << "Day";
+                PLOGI << "Show average order cost is chosen";
                 break;
             case 9:
-                std::cout << "Day";
+                PLOGI << "Show number of orders per dish chosen";
                 break;
             case 10:
+                PLOGI << "Program closed";
                 hasStarted = false;
                 break;
             default:
+                PLOGD << "Unknown command";
                 std::cout << "Unknown command. Try again\n";
         }
     }
