@@ -1,0 +1,6 @@
+#ifndef RESTAURANT_SRC_DBCONNECTION_H
+#define RESTAURANT_SRC_DBCONNECTION_H
+
+void connect();
+
+#endif
