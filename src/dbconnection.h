@@ -3,8 +3,10 @@
 
 #include <pqxx/pqxx>
 
+#include <string>
+
 /**
- * Handles connection to a database
+ * Handles connection to a database and transactions
  */
 
 class DBConnection
@@ -14,6 +16,7 @@ class DBConnection
     public:
         DBConnection();
         void closeConnection();
+        void addCategory( const std::string &cat_name );
 };
 
 #endif
