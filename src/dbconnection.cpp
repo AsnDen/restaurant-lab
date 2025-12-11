@@ -39,7 +39,9 @@ void DBConnection::addCategory( const std::string & cat_name )
         txn.exec( "INSERT INTO categories (category_name) VALUES (" +
                   txn.quote( cat_name ) + ")" );
         txn.commit();
+        PLOGI_( 1 ) << "Added category " << cat_name << "to a table";
     } catch( const std::exception& e ) {
+        PLOGE_( 1 ) << e.what();
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
