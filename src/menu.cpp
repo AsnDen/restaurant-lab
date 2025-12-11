@@ -4,7 +4,6 @@
 void showMainMenu()
 {
     std::cout << "====================\n"
-                 "Shoose option\n"
                  "1.  Add category\n"
                  "2.  Add dish\n"
                  "3.  Add order\n"
@@ -14,8 +13,9 @@ void showMainMenu()
                  "7.  Show top-3 most ordered dishes\n"
                  "8.  Show average cost of order\n"
                  "9.  Show number of orders for each dish\n"
-                 "10.  Exit program\n"
-                 "====================\n";
+                 "0.  Exit program\n"
+                 "====================\n"
+                 "Shoose option: ";
 }
 
 short int chooseOption()
