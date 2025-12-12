@@ -30,6 +30,11 @@ class DBConnection
         std::map<int, Category> getAllCategories();
         std::map<int, Dish> getAllDishes();
         std::map<int, Order> getAllOrders();
+
+        std::map<std::string, long double> getTotalCostPerCategory();
+        std::map<std::string, size_t> getBestSellerDishes();
+        long double averageOrderPrice();
+        std::map<std::string, size_t> getTotalQuantityPerDish();
 };
 
 #endif

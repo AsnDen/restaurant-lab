@@ -8,15 +8,13 @@
 
 int main()
 {
-    // Initialize loggers
-    plog::init<0>( plog::debug, "..\\logs\\program-log.txt" );
-    plog::init<1>( plog::debug, "..\\logs\\log.txt" );
+    // Initialize logger
+    plog::init<0>( plog::debug, "..\\logs\\log.txt" );
 
     Menu menu;
     while( menu.isStarted() ) {
         menu.showMainMenu();
     }
-
 
     return 0;
 }

@@ -21,7 +21,9 @@ class Menu
         void showAllDishes();
         void showAllOrders();
         void showCategoryIncome();
-        void showTopOrders();
+        void showBestSellers();
+        void showAverageCost();
+        void showTotalQuantityPerDish();
         void closeMenu();
 
     public:

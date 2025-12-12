@@ -10,13 +10,13 @@
 #include <iostream>
 #include <map>
 
-DBConnection::DBConnection() : conn{
+DBConnection::DBConnection() : conn(
         "host=localhost "
         "port=5432 "
         "dbname = restaurant_db "
         "user = postgres password = "
         + loadDBPassword()
-    }
+    )
 {
     if( !conn.is_open() ) {
         PLOGF << "Failed to connect to a database";
@@ -165,4 +165,106 @@ std::map<int, Order> DBConnection::getAllOrders()
     }
 
     return orders;
+}
+
+std::map<std::string, long double> DBConnection::getTotalCostPerCategory()
+{
+    std::map<std::string, long double> categories{};
+
+    try {
+        pqxx::work txn( conn );
+        pqxx::result res =
+            txn.exec(
+                "SELECT category_name, SUM(price) AS total_price\n"
+                "FROM categories JOIN dishes\n"
+                "ON dishes.category_id = categories.id\n"
+                "GROUP BY category_name ORDER BY total_price\n" );
+
+        for( const auto& row : res ) {
+            categories[row["category_name"].as<std::string>()] =
+                row["total_price"].as<long double>();
+        }
+
+        PLOGD << "Got total cost for each category";
+
+    } catch( const std::exception& e ) {
+        PLOGE << e.what();
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return categories;
+}
+
+std::map<std::string, size_t> DBConnection::getBestSellerDishes()
+{
+    std::map<std::string, size_t> bestSellers{};
+    try {
+        pqxx::work txn( conn );
+        pqxx::result res =
+            txn.exec(
+                "SELECT name, SUM(quantity) AS total_quantity\n"
+                "FROM dishes JOIN orders ON dishes.id = orders.dish_id\n"
+                "GROUP BY name ORDER BY total_quantity DESC LIMIT 3" );
+
+        for( const auto& row : res ) {
+            bestSellers[row["name"].as<std::string>()] =
+                row["total_quantity"].as<size_t>();
+        }
+
+        PLOGD << "Got best seller dishes";
+
+    } catch( const std::exception& e ) {
+        PLOGE << e.what();
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return bestSellers;
+}
+
+long double DBConnection::averageOrderPrice()
+{
+
+    long double average {0};
+    try {
+        pqxx::work txn( conn );
+        pqxx::result res =
+            txn.exec(
+                "SELECT AVG(total_price) AS avg_price\n"
+                "FROM orders" );
+
+        average = res[0]["avg_price"].as<long double>();
+
+        PLOGD << "Got average cost of order";
+    } catch( const std::exception& e ) {
+        PLOGE << e.what();
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return average;
+}
+
+std::map<std::string, size_t> DBConnection::getTotalQuantityPerDish()
+{
+    std::map<std::string, size_t> ordersQueantity{};
+    try {
+        pqxx::work txn( conn );
+        pqxx::result res =
+            txn.exec(
+                "SELECT name, SUM(quantity) AS quantity\n"
+                "FROM dishes JOIN orders ON dishes.id = orders.dish_id\n"
+                "GROUP BY name ORDER BY quantity" );
+
+        for( const auto& row : res ) {
+            ordersQueantity[row["name"].as<std::string>()] =
+                row["quantity"].as<size_t>();
+        }
+
+        PLOGD << "Got total quantity for each dish";
+
+    } catch( const std::exception& e ) {
+        PLOGE << e.what();
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return ordersQueantity;
 }

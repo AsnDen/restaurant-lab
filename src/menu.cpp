@@ -55,16 +55,16 @@ void Menu::showMainMenu()
             showAllOrders();
             break;
         case 6:
-            PLOGI << "Show income in category is chosen";
+            showCategoryIncome();
             break;
         case 7:
-            PLOGI << "Show top-3 most ordered dished is chosen";
+            showBestSellers();
             break;
         case 8:
-            PLOGI << "Show average order cost is chosen";
+            showAverageCost();
             break;
         case 9:
-            PLOGI << "Show number of orders per dish chosen";
+            showTotalQuantityPerDish();
             break;
         case 0:
             closeMenu();
@@ -132,7 +132,7 @@ void Menu::showAddOrderMenu()
 void Menu::showAllDishes()
 {
     PLOGI << "Show dishes is chosen";
-    std::map dishes{conn.getAllDishes()};
+    std::map<int, Dish> dishes{conn.getAllDishes()};
 
     for( auto &[key, val] : dishes ) {
         std::cout << "id: " << key << '\n';
@@ -143,10 +143,54 @@ void Menu::showAllDishes()
 void Menu::showAllOrders()
 {
     PLOGI << "Show orders is chosen";
-    std::map dishes{conn.getAllOrders()};
+    std::map<int, Order> dishes{conn.getAllOrders()};
 
     for( auto &[key, val] : dishes ) {
         std::cout << "id: " << key << '\n';
         val.printOrder();
+    }
+}
+
+void Menu::showCategoryIncome()
+{
+    PLOGI << "Show income in category is chosen";
+    std::map<std::string, long double> categories{
+        conn.getTotalCostPerCategory()
+    };
+
+    for( auto &[key, val] : categories ) {
+        std::cout << "Category: " << key << '\n'
+                  << "Income: " << val << '\n'
+                  <<  "---------------\n";
+    }
+}
+
+void Menu::showBestSellers()
+{
+    PLOGI << "Show top-3 most ordered dishes is chosen";
+    std::map<std::string, size_t> bestSellers{conn.getBestSellerDishes()};
+
+    for( auto &[key, val] : bestSellers ) {
+        std::cout << "Category: " << key << '\n'
+                  << "Total sold: " << val << '\n'
+                  <<  "---------------\n";
+    }
+}
+
+void Menu::showAverageCost()
+{
+    PLOGI << "Show average order cost is chosen";
+    std::cout << "Average price per oder is " << conn.averageOrderPrice();
+}
+
+void Menu::showTotalQuantityPerDish()
+{
+    PLOGI << "Show number of orders per dish chosen";
+    std::map<std::string, size_t> dishes{conn.getTotalQuantityPerDish()};
+
+    for( auto &[key, val] : dishes ) {
+        std::cout << "Dish: " << key << '\n'
+                  << "Total quantity sold: " << val << '\n'
+                  <<  "---------------\n";
     }
 }
