@@ -180,7 +180,9 @@ void Menu::showBestSellers()
 void Menu::showAverageCost()
 {
     PLOGI << "Show average order cost is chosen";
-    std::cout << "Average price per oder is " << conn.averageOrderPrice();
+    std::cout << "Average price per oder is "
+              << conn.averageOrderPrice()
+              << '\n';
 }
 
 void Menu::showTotalQuantityPerDish()
