@@ -79,6 +79,7 @@ void Menu::showAddCategoryMenu()
     PLOGI << "Add category is used";
     std::cout << "Enter category name: ";
     std::string name{};
+    std::cin.ignore();
     std::getline( std::cin, name );
     conn.addCategory( name );
 }
@@ -88,6 +89,7 @@ void Menu::showAddDishMenu()
     PLOGI << "Add dish is used";
     std::cout << "Enter dish name: ";
     std::string name{};
+    std::cin.ignore();
     std::getline( std::cin, name );
 
     std::cout << "Enter category id: ";
