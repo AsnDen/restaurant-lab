@@ -16,7 +16,13 @@ class DBConnection
     public:
         DBConnection();
         void closeConnection();
-        void addCategory( const std::string &cat_name );
+        void addCategory( const std::string &name );
+        void addDish( const std::string &name,
+                      const int &f_id,
+                      const long double &price );
+        void addOrder( const int &f_id,
+                       const std::string &date,
+                       const int &quantity );
 };
 
 #endif
