@@ -19,6 +19,7 @@ class Menu
         void showAddDishMenu();
         void showAddOrderMenu();
         void showAllDishes();
+        void showAllOrders();
         void showCategoryIncome();
         void showTopOrders();
         void closeMenu();

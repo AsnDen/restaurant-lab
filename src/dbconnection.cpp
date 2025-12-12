@@ -1,5 +1,6 @@
 #include "dbconnection.h"
 #include "secrets.h"
+#include "dish-order.h"
 
 #include <pqxx/pqxx>
 #include <plog/Log.h>
@@ -7,6 +8,7 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include <map>
 
 DBConnection::DBConnection() : conn{
         "host=localhost "
@@ -87,4 +89,80 @@ void DBConnection::addOrder( const int &f_id,
         PLOGE_( 1 ) << e.what();
         std::cerr << "Error: " << e.what() << std::endl;
     }
+}
+
+std::map<int, Category> DBConnection::getAllCategories()
+{
+    PLOGI << "Getting all categories from database";
+    std::map<int, Category> categories{};
+
+    try {
+        pqxx::work txn( conn );
+        pqxx::result res = txn.exec( "SELECT * FROM categories" );
+
+        for( const auto& row : res ) {
+            categories[row["id"].as<int>()] = {
+                row["category_name"].as<std::string>()
+            };
+        }
+
+    } catch( const std::exception& e ) {
+        PLOGE << e.what();
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return categories;
+}
+
+std::map<int, Dish> DBConnection::getAllDishes()
+{
+    PLOGI << "Getting all dishes from database";
+    std::map<int, Dish> dishes{};
+    std::map<int, Category> categories{getAllCategories()};
+
+    try {
+        pqxx::work txn( conn );
+        pqxx::result res = txn.exec( "SELECT * FROM dishes" );
+
+        for( const auto& row : res ) {
+            int foreign_id = row["category_id"].as<int>();
+            dishes[row["id"].as<int>()] = {row["name"].as<std::string>(),
+                                           categories[foreign_id],
+                                           row["price"].as<long double>()
+                                          };
+        }
+
+    } catch( const std::exception& e ) {
+        PLOGE << e.what();
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return dishes;
+}
+
+std::map<int, Order> DBConnection::getAllOrders()
+{
+    PLOGI << "Getting all orders from database";
+    std::map<int, Order> orders{};
+    std::map<int, Dish> dishes{getAllDishes()};
+
+    try {
+        pqxx::work txn( conn );
+        pqxx::result res = txn.exec( "SELECT * FROM orders" );
+
+        for( const auto& row : res ) {
+            int foreign_id = row["dish_id"].as<int>();
+            orders[row["order_id"].as<int>()] = {
+                dishes[foreign_id],
+                row["order_date"].as<std::string>(),
+                row["quantity"].as<size_t>()
+            };
+        }
+
+    } catch( const std::exception& e ) {
+        PLOGE << e.what();
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return orders;
 }

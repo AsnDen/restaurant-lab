@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <map>
 
 Menu::Menu() : conn{}, hasStarted{true}
 {
@@ -13,6 +14,13 @@ Menu::Menu() : conn{}, hasStarted{true}
 bool Menu::isStarted()
 {
     return hasStarted;
+}
+
+void Menu::closeMenu()
+{
+    PLOGI << "Program is closed";
+    conn.closeConnection();
+    hasStarted = false;
 }
 
 void Menu::showMainMenu()
@@ -41,10 +49,10 @@ void Menu::showMainMenu()
             showAddOrderMenu();
             break;
         case 4:
-            PLOGI << "Show dishes is chosen";
+            showAllDishes();
             break;
         case 5:
-            PLOGI << "Show orders is chosen";
+            showAllOrders();
             break;
         case 6:
             PLOGI << "Show income in category is chosen";
@@ -121,9 +129,24 @@ void Menu::showAddOrderMenu()
     conn.addOrder( f_id, date, quantity );
 }
 
-void Menu::closeMenu()
+void Menu::showAllDishes()
 {
-    PLOGI << "Program is closed";
-    conn.closeConnection();
-    hasStarted = false;
+    PLOGI << "Show dishes is chosen";
+    std::map dishes{conn.getAllDishes()};
+
+    for( auto &[key, val] : dishes ) {
+        std::cout << "id: " << key << '\n';
+        val.printDish();
+    }
+}
+
+void Menu::showAllOrders()
+{
+    PLOGI << "Show orders is chosen";
+    std::map dishes{conn.getAllOrders()};
+
+    for( auto &[key, val] : dishes ) {
+        std::cout << "id: " << key << '\n';
+        val.printOrder();
+    }
 }

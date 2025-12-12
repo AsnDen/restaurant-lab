@@ -1,9 +1,12 @@
 #ifndef RESTAURANT_SRC_DBCONNECTION_H
 #define RESTAURANT_SRC_DBCONNECTION_H
 
+#include "dish-order.h"
+
 #include <pqxx/pqxx>
 
 #include <string>
+#include <map>
 
 /**
  * Handles connection to a database and transactions
@@ -23,6 +26,10 @@ class DBConnection
         void addOrder( const int &f_id,
                        const std::string &date,
                        const int &quantity );
+
+        std::map<int, Category> getAllCategories();
+        std::map<int, Dish> getAllDishes();
+        std::map<int, Order> getAllOrders();
 };
 
 #endif

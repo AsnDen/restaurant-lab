@@ -10,42 +10,52 @@
 class Category
 {
     private:
-        int id;
         std::string name;
     public:
         Category();
-        Category( int new_id,
-                  std::string new_name );
+        Category( std::string new_name );
+
+        std::string getName();
+
+        void printCategory();
 };
 
 class Dish
 {
     protected:
-        int id;
         std::string name;
         Category category;
         long double price;
     public:
         Dish();
-        Dish( int new_id,
-              std::string new_name,
+        Dish( std::string new_name,
               Category new_category,
               long double new_price );
+
+        std::string getName();
+        Category getCategory();
+        long double getPrice();
+
+        void printDish();
 };
 
 class Order
 {
     private:
-        int id;
         Dish dish;
         std::string date;
         size_t quantity;
     public:
         Order();
-        Order( int new_id,
-               Dish new_dish,
+        Order( Dish new_dish,
                std::string new_date,
                size_t new_quantity );
+
+        Dish getDish();
+        std::string getDate();
+        size_t getQuantity();
+
+        void printOrder();
 };
 
 #endif
