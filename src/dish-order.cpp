@@ -3,25 +3,30 @@
 // ==============
 //    Category
 
-Category::Category() : name{ "NONE" }
+Category::Category() : id{-1}, name{ "NONE" }
 {
 }
 
-Category::Category( std::string new_name ) : name{ new_name }
+Category::Category( int new_id,
+                    std::string new_name )
+    : id{new_id},
+      name{ new_name }
 {
 }
 
 // ==============
 //      Dish
 
-Dish::Dish() : name {"NONE"}, category{}, price{-1}
+Dish::Dish() : id{-1}, name {"NONE"}, category{}, price{-1}
 {
 }
 
-Dish::Dish( std::string new_name,
+Dish::Dish( int new_id,
+            std::string new_name,
             Category new_category,
             long double new_price )
-    : name{ new_name },
+    : id{new_id},
+      name{ new_name },
       category{ new_category },
       price{ new_price }
 {
@@ -30,14 +35,16 @@ Dish::Dish( std::string new_name,
 // ==============
 //    Order
 
-Order::Order() : dish{}, date{"0000-00-00"}, quantity{0}
+Order::Order() : id{-1}, dish{}, date{"0000-00-00"}, quantity{0}
 {
 }
 
-Order::Order( Dish new_dish,
+Order::Order( int new_id,
+              Dish new_dish,
               std::string new_date,
               size_t new_quantity )
-    : dish{new_dish},
+    : id{new_id},
+      dish{new_dish},
       date{new_date},
       quantity{new_quantity}
 {

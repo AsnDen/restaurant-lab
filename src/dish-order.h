@@ -10,21 +10,25 @@
 class Category
 {
     private:
+        int id;
         std::string name;
     public:
         Category();
-        Category( std::string new_name );
+        Category( int new_id,
+                  std::string new_name );
 };
 
 class Dish
 {
     protected:
+        int id;
         std::string name;
         Category category;
         long double price;
     public:
         Dish();
-        Dish( std::string new_name,
+        Dish( int new_id,
+              std::string new_name,
               Category new_category,
               long double new_price );
 };
@@ -32,12 +36,14 @@ class Dish
 class Order
 {
     private:
+        int id;
         Dish dish;
         std::string date;
         size_t quantity;
     public:
         Order();
-        Order( Dish new_dish,
+        Order( int new_id,
+               Dish new_dish,
                std::string new_date,
                size_t new_quantity );
 };
