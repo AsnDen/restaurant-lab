@@ -76,7 +76,7 @@ MainCourse::MainCourse( std::string new_name,
 
 Dessert::Dessert( std::string new_name,
                   long double new_price )
-    : Dish( new_name, {"Dessert"}, new_price )
+    : Dish( new_name, {"Desserts"}, new_price )
 {
 }
 
