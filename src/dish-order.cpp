@@ -63,6 +63,24 @@ void Dish::printDish()
 }
 
 // ==============
+//      MainCourse
+
+MainCourse::MainCourse( std::string new_name,
+                        long double new_price )
+    : Dish( new_name, {"Main Course"}, new_price )
+{
+}
+
+// ==============
+//      Dish
+
+Dessert::Dessert( std::string new_name,
+                  long double new_price )
+    : Dish( new_name, {"Dessert"}, new_price )
+{
+}
+
+// ==============
 //    Order
 
 Order::Order() : dish{}, date{"0000-00-00"}, quantity{0}

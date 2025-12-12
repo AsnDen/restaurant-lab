@@ -20,6 +20,8 @@ class Category
         void printCategory();
 };
 
+// Dishes start
+
 class Dish
 {
     protected:
@@ -39,6 +41,22 @@ class Dish
         void printDish();
 };
 
+class MainCourse : public Dish
+{
+    public:
+        MainCourse( std::string new_name,
+                    long double new_price );
+};
+
+class Dessert : public Dish
+{
+    public:
+        Dessert( std::string new_name,
+                 long double new_price );
+};
+
+// Dishes end
+
 class Order
 {
     private:
@@ -56,6 +74,24 @@ class Order
         size_t getQuantity();
 
         void printOrder();
+};
+
+template<typename T1, typename T2>
+class Pair
+{
+    private:
+        T1 first;
+        T2 second;
+
+    public:
+        Pair( const T1& f, const T2& s ) : first( f ), second( s ) {}
+
+        const T1 &getFirst() const {
+            return first;
+        }
+        const T2 &getSecond() const {
+            return second;
+        }
 };
 
 #endif
