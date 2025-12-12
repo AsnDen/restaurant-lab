@@ -1,7 +1,21 @@
 #include "menu.h"
-#include <iostream>
 
-void showMainMenu()
+#include <plog/Log.h>
+
+#include <iostream>
+#include <string>
+
+Menu::Menu() : conn{}, hasStarted{true}
+{
+    PLOGI << "Program is started";
+}
+
+bool Menu::isStarted()
+{
+    return hasStarted;
+}
+
+void Menu::showMainMenu()
 {
     std::cout << "====================\n"
                  "1.  Add category\n"
@@ -16,11 +30,98 @@ void showMainMenu()
                  "0.  Exit program\n"
                  "====================\n"
                  "Shoose option: ";
+    switch( chooseOption() ) {
+        case 1:
+            showAddCategoryMenu();
+            break;
+        case 2:
+            showAddDishMenu();
+            break;
+        case 3:
+            showAddOrderMenu();
+            break;
+        case 4:
+            PLOGI << "Show dishes is chosen";
+            break;
+        case 5:
+            PLOGI << "Show orders is chosen";
+            break;
+        case 6:
+            PLOGI << "Show income in category is chosen";
+            break;
+        case 7:
+            PLOGI << "Show top-3 most ordered dished is chosen";
+            break;
+        case 8:
+            PLOGI << "Show average order cost is chosen";
+            break;
+        case 9:
+            PLOGI << "Show number of orders per dish chosen";
+            break;
+        case 0:
+            closeMenu();
+            break;
+        default:
+            PLOGD << "Unknown command";
+            std::cout << "Unknown command. Try again\n";
+    }
 }
 
-short int chooseOption()
+short int Menu::chooseOption()
 {
     short int inp{};
     std::cin >> inp;
     return inp;
+}
+
+void Menu::showAddCategoryMenu()
+{
+    PLOGI << "Add category is used";
+    std::cout << "Enter category name: ";
+    std::string name{};
+    std::getline( std::cin, name );
+    conn.addCategory( name );
+}
+
+void Menu::showAddDishMenu()
+{
+    PLOGI << "Add dish is used";
+    std::cout << "Enter dish name: ";
+    std::string name{};
+    std::getline( std::cin, name );
+
+    std::cout << "Enter category id: ";
+    int f_id{};
+    std::cin >> f_id;
+
+    std::cout << "Enter price: ";
+    long double price{};
+    std::cin >> price;
+
+    conn.addDish( name, f_id, price );
+}
+
+void Menu::showAddOrderMenu()
+{
+    PLOGI << "Add order is used";
+    std::cout << "Enter dish id: ";
+    int f_id{};
+    std::cin >> f_id;
+
+    std::cout << "Enter date (YYYY-MM-DD): ";
+    std::string date{};
+    std::cin >> date;
+
+    std::cout << "Enter quantity: ";
+    int quantity{};
+    std::cin >> quantity;
+
+    conn.addOrder( f_id, date, quantity );
+}
+
+void Menu::closeMenu()
+{
+    PLOGI << "Program is closed";
+    conn.closeConnection();
+    hasStarted = false;
 }
