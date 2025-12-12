@@ -18,8 +18,8 @@ bool Menu::isStarted()
 
 void Menu::closeMenu()
 {
-    PLOGI << "Program is closed";
     conn.closeConnection();
+    PLOGI << "Program is closed";
     hasStarted = false;
 }
 
